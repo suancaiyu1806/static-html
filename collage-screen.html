@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI图像 - 拼图</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .back-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .save-btn {
+            color: #CCFF00;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .preview-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: #e8e8e8;
+        }
+        
+        .collage-preview {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 10px;
+            display: grid;
+            gap: 5px;
+        }
+        
+        .collage-preview.layout-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .collage-preview.layout-3 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 2fr 1fr;
+        }
+        
+        .collage-preview.layout-4 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+        
+        .collage-item {
+            background: #f0f0f0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .collage-item:hover {
+            background: #e0e0e0;
+        }
+        
+        .collage-item.large {
+            grid-column: span 2;
+        }
+        
+        .templates-section {
+            background: white;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .template-item {
+            aspect-ratio: 1;
+            background: #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            display: grid;
+            gap: 2px;
+            padding: 5px;
+        }
+        
+        .template-item.active {
+            border-color: #CCFF00;
+            background: #f9ffe6;
+        }
+        
+        .template-item.t2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .template-item.t3 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: 2fr 1fr;
+        }
+        
+        .template-item.t4 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .template-item.t6 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .template-cell {
+            background: #ddd;
+            border-radius: 3px;
+        }
+        
+        .template-cell.large {
+            grid-column: span 2;
+        }
+        
+        .arrangement-section {
+            margin-top: 20px;
+        }
+        
+        .arrangement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .arrangement-item {
+            aspect-ratio: 1;
+            background: #f5f5f5;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .arrangement-item.active {
+            border-color: #CCFF00;
+            background: #f9ffe6;
+        }
+        
+        .background-section {
+            margin-top: 20px;
+        }
+        
+        .background-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .bg-option {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .bg-option.active {
+            border-color: #CCFF00;
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.3);
+        }
+        
+        .bg-white {
+            background: white;
+        }
+        
+        .bg-black {
+            background: #000;
+        }
+        
+        .bg-green {
+            background: #CCFF00;
+        }
+        
+        .bg-pattern {
+            background: repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 10px, #e0e0e0 10px, #e0e0e0 20px);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            padding-bottom: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-preview {
+            background: white;
+            color: #000;
+            border: 2px solid #CCFF00;
+        }
+        
+        .btn-preview:active {
+            background: #f9ffe6;
+        }
+        
+        .btn-save {
+            background: #CCFF00;
+            color: #000;
+            border: none;
+        }
+        
+        .btn-save:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="back-btn" onclick="window.location.href='home-screen.html'">←</div>
+        <div class="title">拼图</div>
+        <div class="save-btn" onclick="save()">保存</div>
+    </div>
+    
+    <!-- Preview Area -->
+    <div class="preview-area">
+        <div class="collage-preview layout-4" id="collagePreview">
+            <div class="collage-item">图片 1</div>
+            <div class="collage-item">图片 2</div>
+            <div class="collage-item">图片 3</div>
+            <div class="collage-item">图片 4</div>
+        </div>
+    </div>
+    
+    <!-- Templates Section -->
+    <div class="templates-section">
+        <div class="section-title">Template Selection</div>
+        <div class="template-grid">
+            <div class="template-item t2" onclick="selectTemplate(this, 2)">
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+            </div>
+            <div class="template-item t3" onclick="selectTemplate(this, 3)">
+                <div class="template-cell large"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+            </div>
+            <div class="template-item t4 active" onclick="selectTemplate(this, 4)">
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+            </div>
+            <div class="template-item t6" onclick="selectTemplate(this, 6)">
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+                <div class="template-cell"></div>
+            </div>
+        </div>
+        
+        <!-- Arrangement Section -->
+        <div class="arrangement-section">
+            <div class="section-title">Arrangement Area</div>
+            <div class="arrangement-grid">
+                <div class="arrangement-item active" onclick="selectArrangement(this)">↓</div>
+                <div class="arrangement-item" onclick="selectArrangement(this)">↔</div>
+                <div class="arrangement-item" onclick="selectArrangement(this)">↕</div>
+            </div>
+        </div>
+        
+        <!-- Background Section -->
+        <div class="background-section">
+            <div class="section-title">Background</div>
+            <div class="background-options">
+                <div class="bg-option bg-white active" onclick="selectBackground(this)"></div>
+                <div class="bg-option bg-black" onclick="selectBackground(this)"></div>
+                <div class="bg-option bg-green" onclick="selectBackground(this)"></div>
+                <div class="bg-option bg-pattern" onclick="selectBackground(this)"></div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <div class="action-btn btn-preview" onclick="preview()">Preview</div>
+            <div class="action-btn btn-save" onclick="save()">Save</div>
+        </div>
+    </div>
+    
+    <script>
+        function selectTemplate(element, count) {
+            document.querySelectorAll('.template-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            const preview = document.getElementById('collagePreview');
+            preview.innerHTML = '';
+            preview.className = 'collage-preview';
+            
+            if (count === 2) {
+                preview.classList.add('layout-2');
+                for (let i = 1; i <= 2; i++) {
+                    preview.innerHTML += `<div class="collage-item">图片 ${i}</div>`;
+                }
+            } else if (count === 3) {
+                preview.classList.add('layout-3');
+                preview.innerHTML = '<div class="collage-item large">图片 1</div>';
+                for (let i = 2; i <= 3; i++) {
+                    preview.innerHTML += `<div class="collage-item">图片 ${i}</div>`;
+                }
+            } else if (count === 4) {
+                preview.classList.add('layout-4');
+                for (let i = 1; i <= 4; i++) {
+                    preview.innerHTML += `<div class="collage-item">图片 ${i}</div>`;
+                }
+            } else if (count === 6) {
+                preview.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                for (let i = 1; i <= 6; i++) {
+                    preview.innerHTML += `<div class="collage-item">图片 ${i}</div>`;
+                }
+            }
+        }
+        
+        function selectArrangement(element) {
+            document.querySelectorAll('.arrangement-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+        
+        function selectBackground(element) {
+            document.querySelectorAll('.bg-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+        
+        function preview() {
+            alert('预览拼图效果');
+        }
+        
+        function save() {
+            alert('保存拼图');
+        }
+    </script>
+</body>
+</html>
