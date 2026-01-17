@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG 基本图形展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .shapes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .shape-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .shape-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .shape-card h3 {
+            color: #333;
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .shape-card svg {
+            display: block;
+            margin: 0 auto 16px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+
+        .shape-card code {
+            display: block;
+            background: #2d3748;
+            color: #68d391;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .tag {
+            color: #fc8181;
+        }
+
+        .attr {
+            color: #90cdf4;
+        }
+
+        .value {
+            color: #fbd38d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SVG 基本图形展示</h1>
+        
+        <div class="shapes-grid">
+            <!-- 矩形 -->
+            <div class="shape-card">
+                <h3>📦 矩形 (rect)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <rect x="20" y="20" width="80" height="80" fill="#4299e1" />
+                    <rect x="120" y="20" width="100" height="80" rx="15" ry="15" fill="#48bb78" stroke="#2f855a" stroke-width="3"/>
+                </svg>
+                <code><span class="tag">&lt;rect</span> <span class="attr">x</span>=<span class="value">"20"</span> <span class="attr">y</span>=<span class="value">"20"</span> <span class="attr">width</span>=<span class="value">"80"</span> <span class="attr">height</span>=<span class="value">"80"</span> <span class="attr">fill</span>=<span class="value">"#4299e1"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 圆形 -->
+            <div class="shape-card">
+                <h3>⭕ 圆形 (circle)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <circle cx="60" cy="60" r="45" fill="#ed64a6" />
+                    <circle cx="170" cy="60" r="40" fill="none" stroke="#9f7aea" stroke-width="5"/>
+                </svg>
+                <code><span class="tag">&lt;circle</span> <span class="attr">cx</span>=<span class="value">"60"</span> <span class="attr">cy</span>=<span class="value">"60"</span> <span class="attr">r</span>=<span class="value">"45"</span> <span class="attr">fill</span>=<span class="value">"#ed64a6"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 椭圆 -->
+            <div class="shape-card">
+                <h3>🥚 椭圆 (ellipse)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <ellipse cx="80" cy="60" rx="60" ry="35" fill="#f6ad55" />
+                    <ellipse cx="190" cy="60" rx="40" ry="50" fill="#fc8181" opacity="0.8"/>
+                </svg>
+                <code><span class="tag">&lt;ellipse</span> <span class="attr">cx</span>=<span class="value">"80"</span> <span class="attr">cy</span>=<span class="value">"60"</span> <span class="attr">rx</span>=<span class="value">"60"</span> <span class="attr">ry</span>=<span class="value">"35"</span> <span class="attr">fill</span>=<span class="value">"#f6ad55"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 线条 -->
+            <div class="shape-card">
+                <h3>📏 线条 (line)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <line x1="20" y1="20" x2="230" y2="100" stroke="#4299e1" stroke-width="4" />
+                    <line x1="20" y1="100" x2="230" y2="20" stroke="#ed64a6" stroke-width="4" stroke-dasharray="10,5"/>
+                </svg>
+                <code><span class="tag">&lt;line</span> <span class="attr">x1</span>=<span class="value">"20"</span> <span class="attr">y1</span>=<span class="value">"20"</span> <span class="attr">x2</span>=<span class="value">"230"</span> <span class="attr">y2</span>=<span class="value">"100"</span> <span class="attr">stroke</span>=<span class="value">"#4299e1"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 折线 -->
+            <div class="shape-card">
+                <h3>📈 折线 (polyline)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <polyline points="20,100 60,40 100,80 140,20 180,60 220,30" 
+                              fill="none" stroke="#48bb78" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <code><span class="tag">&lt;polyline</span> <span class="attr">points</span>=<span class="value">"20,100 60,40 100,80 140,20 180,60 220,30"</span> <span class="attr">fill</span>=<span class="value">"none"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 多边形 -->
+            <div class="shape-card">
+                <h3>⬡ 多边形 (polygon)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <!-- 五边形 -->
+                    <polygon points="70,15 90,55 130,55 100,80 110,115 70,95 30,115 40,80 10,55 50,55" 
+                             fill="#9f7aea" />
+                    <!-- 六边形 -->
+                    <polygon points="190,20 230,40 230,80 190,100 150,80 150,40" 
+                             fill="#4fd1c5" stroke="#319795" stroke-width="3"/>
+                </svg>
+                <code><span class="tag">&lt;polygon</span> <span class="attr">points</span>=<span class="value">"70,15 90,55 ..."</span> <span class="attr">fill</span>=<span class="value">"#9f7aea"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 路径 -->
+            <div class="shape-card">
+                <h3>✏️ 路径 (path)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <!-- 心形 -->
+                    <path d="M125,30 C125,30 100,10 70,30 C40,50 40,80 70,100 C100,120 125,110 125,110 C125,110 150,120 180,100 C210,80 210,50 180,30 C150,10 125,30 125,30 Z" 
+                          fill="#fc8181"/>
+                </svg>
+                <code><span class="tag">&lt;path</span> <span class="attr">d</span>=<span class="value">"M125,30 C125,30 100,10..."</span> <span class="attr">fill</span>=<span class="value">"#fc8181"</span> <span class="tag">/&gt;</span></code>
+            </div>
+
+            <!-- 文本 -->
+            <div class="shape-card">
+                <h3>📝 文本 (text)</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <text x="125" y="50" text-anchor="middle" font-size="28" font-weight="bold" fill="#4299e1">Hello SVG!</text>
+                    <text x="125" y="90" text-anchor="middle" font-size="18" fill="#718096">矢量图形</text>
+                </svg>
+                <code><span class="tag">&lt;text</span> <span class="attr">x</span>=<span class="value">"125"</span> <span class="attr">y</span>=<span class="value">"50"</span> <span class="attr">text-anchor</span>=<span class="value">"middle"</span><span class="tag">&gt;</span>Hello SVG!<span class="tag">&lt;/text&gt;</span></code>
+            </div>
+
+            <!-- 渐变 -->
+            <div class="shape-card">
+                <h3>🌈 渐变效果</h3>
+                <svg width="250" height="120" viewBox="0 0 250 120">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#667eea"/>
+                            <stop offset="100%" style="stop-color:#764ba2"/>
+                        </linearGradient>
+                        <radialGradient id="grad2" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#ffecd2"/>
+                            <stop offset="100%" style="stop-color:#fcb69f"/>
+                        </radialGradient>
+                    </defs>
+                    <rect x="15" y="20" width="100" height="80" rx="10" fill="url(#grad1)"/>
+                    <circle cx="180" cy="60" r="45" fill="url(#grad2)"/>
+                </svg>
+                <code><span class="tag">&lt;linearGradient</span> <span class="attr">id</span>=<span class="value">"grad1"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/linearGradient&gt;</span></code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
